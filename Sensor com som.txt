@@ -1,0 +1,80 @@
+# inclui  < Arduíno.h >  
+# inclui  < ESP8266WiFi.h >
+# inclui  < WiFiClient.h >
+# include  < ESP8266WebServer.h >
+
+// configura Rede
+const  char * ssid = " PROF.RAFAEL " ; // Rotador
+const  char * senha = " " ;
+Endereço IP ip ( 192 , 168 , 1 , 123 ); // ip do dispositivo
+gateway de endereço IP ( 192 , 168 , 1 , 1 ); // porta de entrada
+sub -rede IPAddress ( 255 , 255 , 255 , 0 ); // rímel
+
+
+
+servidor ESP8266WebServer ( 80 );
+página de seqüência de caracteres;
+
+
+// porta digital
+const  int sensor = 4 ;
+ evento longo não assinado = 0 ;
+
+
+void  configuração () {
+  
+  Serial. começar ( 9600 );
+  
+  // habilita porta
+  
+  
+  Serial. print ( " Conectando a " );
+  Serial. println (ssid);
+  Wi-fi. começar (ssid, senha);
+  Wi-fi. config (ip, gateway, sub-rede);
+  while (WiFi. status () != WL_CONNECTED) {
+    atraso ( 500 );
+    Serial. imprima ( " . " );
+  }
+ 
+  Serial. println ( " " );
+  Serial. println ( " WiFi conectado. " );
+  Serial. println ( " Endereço IP: " );
+  Serial. println (WiFi. localIP ());
+  servidor. começar ();
+
+  servidor. em ( " / " , [](){
+
+     page = " <!DOCTYPE html> \
+             <html>\
+             <head> <meta http-equiv='refresh' content='0' </head> \
+             <corpo> \
+             <h1>Sensor para o servidor Web do Node MCU</h1><h3>Dados:</h3> <h4> " + " saida " +   " </h4> \
+             </body>\
+             </html> " ;
+
+    servidor. enviar ( 200 , " texto/html " , página);
+  });
+
+}
+
+void  loop (){
+ 
+  
+          
+            int saída = digitalRead (sensor);
+            if (saída == ALTO){
+              if ( milis () - evento > 25 ){
+                Serial. println ( " Reconheci o som " );
+                Serial. println ( milis ());
+                Serial. println (evento);
+                Serial. println ( milis () - evento);
+                
+                
+               }
+             evento = milis ();
+             }
+             servidor. handleCliente ();
+
+
+}
